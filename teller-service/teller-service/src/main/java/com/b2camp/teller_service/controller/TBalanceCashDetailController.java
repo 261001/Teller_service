@@ -4,10 +4,9 @@ import com.b2camp.teller_service.dto.TBalanceCashDetailRequest;
 import com.b2camp.teller_service.dto.TBalanceCashDetailResponse;
 import com.b2camp.teller_service.service.TBalanceCashDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/t-balance-cash-detail")
@@ -25,5 +24,10 @@ public class TBalanceCashDetailController {
     @PostMapping("/withdraw")
     public TBalanceCashDetailResponse withdrawCash(@RequestBody TBalanceCashDetailRequest tBalanceCashDetailRequest) {
         return tBalanceCashDetailService.createTarik(tBalanceCashDetailRequest);
+    }
+
+    @GetMapping("/history/{balanceAccountNumber}")
+    public List<TBalanceCashDetailResponse> readHistory(@PathVariable String balanceAccountNumber) {
+        return tBalanceCashDetailService.getTransactionHistory(balanceAccountNumber);
     }
 }

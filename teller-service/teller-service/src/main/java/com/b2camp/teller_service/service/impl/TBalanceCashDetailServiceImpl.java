@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -90,6 +91,26 @@ public class TBalanceCashDetailServiceImpl implements TBalanceCashDetailService 
         response.setCreatedAt(transaction.getCreatedAt());
 
         return response;
+    }
+
+    @Override
+    public List<TBalanceCashDetailResponse> getTransactionHistory(String destAccountNumber) {
+        return tBalanceCashDetailRepository.findByBalanceCashId(destAccountNumber)
+                .stream()
+                .map(t -> TBalanceCashDetailResponse.builder()
+                        .balanceCashDetailId(t.getBalanceCashDetailId())
+                        .balanceCashId(t.getBalanceCashId())
+                        .nominal(t.getNominal())
+                        .mutation(t.getMutation())
+                        .destAccountNumber(t.getDestAccountNumber())
+                        .endBalance(t.getEndBalance())
+                        .balance(t.getBalance())
+                        .referenceCode(t.getReferenceCode())
+                        .createdAt(t.getCreatedAt())
+                        .authorizationAt(t.getAuthorizationAt())
+                        .build()
+                )
+                .toList();
     }
 
     @Override
